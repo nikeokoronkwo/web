@@ -70,13 +70,18 @@ Future<Map<String, Set<String>>> _generateElementTagMap() async {
 
 Future<TranslationResult> generateBindings(
     String packageRoot, String librarySubDir,
-    {required bool generateAll}) async {
+    {required bool generateAll, List<String> allowedFiles = const []}) async {
   final cssStyleDeclarations = await _generateCSSStyleDeclarations();
   final elementHTMLMap = await _generateElementTagMap();
   final translator = Translator(
       packageRoot, librarySubDir, cssStyleDeclarations, elementHTMLMap,
       generateAll: generateAll);
-  final array = objectEntries(await idl.parseAll().toDart);
+  var array = objectEntries(await idl.parseAll().toDart);
+  if (!generateAll) {
+    array = array.toDart.where((ref) => allowedFiles.contains(
+      (ref as JSArray)[0].dartify() as String)
+    ).toList().toJS;
+  }
   for (var i = 0; i < array.length; i++) {
     final entry = array[i] as JSArray<JSAny?>;
     final shortname = (entry[0] as JSString).toDart;

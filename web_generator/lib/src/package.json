@@ -15,6 +15,7 @@
     "@webref/idl": "^3.43.1"
   },
   "devDependencies": {
+    "@types/web": "^0.0.216",
     "webidl2": "^24.2.2"
   }
 }

@@ -30,6 +30,7 @@ void main(List<String> args) async {
     outputDirectory: argResult['output-directory'] as String,
     generateAll: argResult['generate-all'] as bool,
     languageVersion: Version.parse(languageVersionString),
+    allowedFiles: argResult.rest
   );
 }
 
@@ -37,13 +38,14 @@ Future<void> _generateAndWriteBindings({
   required String outputDirectory,
   required bool generateAll,
   required Version languageVersion,
+  List<String> allowedFiles = const []
 }) async {
   const librarySubDir = 'dom';
 
   ensureDirectoryExists('$outputDirectory/$librarySubDir');
 
   final bindings = await generateBindings(packageRoot, librarySubDir,
-      generateAll: generateAll);
+      generateAll: generateAll, allowedFiles: allowedFiles);
   for (var entry in bindings.entries) {
     final libraryPath = entry.key;
     final library = entry.value;
