@@ -30,7 +30,8 @@ void main(List<String> args) async {
     outputDirectory: argResult['output-directory'] as String,
     generateAll: argResult['generate-all'] as bool,
     languageVersion: Version.parse(languageVersionString),
-    allowedFiles: argResult.rest
+    // some odd bug, where one of the arguments is an empty string
+    allowedFiles: argResult.rest.where((i) => i.trim().isNotEmpty).toList()
   );
 }
 

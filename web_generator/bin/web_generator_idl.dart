@@ -11,6 +11,7 @@ import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:args/args.dart';
+import 'package:collection/collection.dart';
 import 'package:io/ansi.dart' as ansi;
 import 'package:io/io.dart';
 import 'package:package_config/package_config.dart';
@@ -36,16 +37,9 @@ $_usage''');
     return;
   }
 
-  if (!(argResult['generate-all'] as bool) && argResult.rest.isEmpty) {
-    print('''
-${ansi.lightRed.wrap("Arguments cannot be empty")}
-
-$_usage''');
-    exitCode = ExitCode.usage.code;
-    return;
-  }
-
   assert(p.fromUri(Platform.script).endsWith(_thisScript.toFilePath()));
+  
+  final allowedFiles = argResult.rest;
 
   // Run `npm install` or `npm update` as needed.
   final update = argResult['update'] as bool;
@@ -103,7 +97,10 @@ $_usage''');
   );
 
   // Delete previously generated files that have not been updated.
-  for (final file in existingFiles) {
+  for (final file in existingFiles.where((file) {
+    return allowedFiles.map((f) => f.toLowerCase())
+      .contains(p.basenameWithoutExtension(file.path));
+  })) {
     final stamp = timeStamps[file.path];
     if (stamp == file.lastModifiedSync()) {
       file.deleteSync();

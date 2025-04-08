@@ -77,7 +77,7 @@ Future<TranslationResult> generateBindings(
       packageRoot, librarySubDir, cssStyleDeclarations, elementHTMLMap,
       generateAll: generateAll);
   var array = objectEntries(await idl.parseAll().toDart);
-  if (!generateAll) {
+  if (allowedFiles.isNotEmpty) {
     array = array.toDart.where((ref) => allowedFiles.contains(
       (ref as JSArray)[0].dartify() as String)
     ).toList().toJS;
