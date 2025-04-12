@@ -17,7 +17,7 @@ import 'package:io/io.dart';
 import 'package:package_config/package_config.dart';
 import 'package:path/path.dart' as p;
 
-/// The IDL files are passed as arguments
+/// The IDL file names are passed as arguments
 void main(List<String> arguments) async {
   final ArgResults argResult;
 
