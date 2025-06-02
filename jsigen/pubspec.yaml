@@ -1,0 +1,5 @@
+name: jsigen
+
+environment:
+  sdk: ^3.6.0
+
