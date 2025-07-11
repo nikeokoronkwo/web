@@ -55,6 +55,12 @@ abstract interface class Config {
       List<String> includedDeclarations}) = ConfigImpl._;
 }
 
+abstract class IDLConfig extends Config {
+  factory IDLConfig() {
+    throw UnimplementedError();
+  }
+}
+
 class ConfigImpl implements Config {
   @override
   String? description;
